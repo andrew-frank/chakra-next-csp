@@ -14,7 +14,7 @@ export default function RootLayout({
 }) {
   const nonce = headers().get("x-nonce") ?? undefined;
   console.log("layout nonce", nonce);
-  const withCache = false;
+  const withCache = true;
   console.log("with cache", withCache);
   return (
     <html className={inter.className} suppressHydrationWarning>

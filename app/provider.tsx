@@ -4,6 +4,7 @@ import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import { ThemeProvider } from "next-themes";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
+import { useState } from "react";
 
 interface Props {
   nonce?: string;
@@ -40,6 +41,6 @@ function Provider(props: Props) {
 }
 
 export function WithCacheProvider({ nonce, children }: Props): JSX.Element {
-  const cache = createCache({ nonce, key: "custom" });
+  const [cache] = useState(createCache({ nonce, key: "custom" }));
   return <CacheProvider value={cache}>{children}</CacheProvider>;
 }
