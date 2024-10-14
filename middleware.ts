@@ -24,18 +24,23 @@ export function middleware(request: NextRequest): NextResponse<unknown> {
     frame-ancestors 'none';
     upgrade-insecure-requests;
   `
-  
   /**
-   * TODO: the CSP for `style-src` does not fully work with `nonce` and SSR.
-   * The Client gets empty nonce string (browsers strip the nonces) which causes client-server rendering mismatch.
-   * If it gets fixed, we'll be able to change the `style-src` to `'self' 'nonce-${nonce}';` (i.e. add 'nonce-{nonce}' instead of 'unsafe-inline')
-   * Tracker 1: https://github.com/vercel/next.js/issues/63749
-   * Tracker 2: https://github.com/vercel/next.js/issues/63015
+   * NOTE: the CSP for `style-src` does not fully work with `nonce` and SSR. This is because the `nonce` are hidden on modern browsers.
+   * More context:
+   *  HTML spec PR: https://github.com/whatwg/html/pull/2373.
+   *  Next JS issues: https://github.com/vercel/next.js/issues/63749, https://github.com/vercel/next.js/issues/63015
+   *
+   * As a result the client gets empty nonce string (browsers strip the nonces) which causes client-server rendering mismatch.
+   *
+   * Therefore we're using:
+   *   style-src 'self' 'unsafe-inline';
+   * instead of:
+   *   style-src 'self' 'nonce-${nonce}';
    *
    * NOTE: "For further relief (at the time of writing), both Twitter's report and Spotify's report on Mozilla Observatory both include 'unsafe-inline' for styling, but their overall scores couldn't be higher. We're always limited in some way by the architecture we choose, though it's clear that achieving a top-grade security score is doable regardless of how you're using Next.js."
    * Source: https://reesmorris.co.uk/blog/implementing-proper-csp-nextjs-styled-components
    */
-
+  
   const csp = cspHeader.replace(/\s{2,}/g, ' ').trim()
 
   const requestHeaders = new Headers(request.headers)
