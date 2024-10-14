@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google"
 import Provider from "./provider"
+import { headers } from "next/headers"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,11 +12,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const nonce = headers().get('x-nonce') ?? undefined
+  console.log('layout nonce', nonce)
   return (
     <html className={inter.className} suppressHydrationWarning>
       <head />
       <body>
-        <Provider>{children}</Provider>
+        <Provider nonce={nonce}>{children}</Provider>
       </body>
     </html>
   )

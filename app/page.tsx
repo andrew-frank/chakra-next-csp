@@ -14,7 +14,6 @@ import Image from "next/image"
 import { ColorModeToggle } from "../components/color-mode-toggle"
 
 export default async function Page() {
-  console.log('lol')
   return (
     <Box textAlign="center" fontSize="xl" pt="30vh">
       <VStack gap="8">

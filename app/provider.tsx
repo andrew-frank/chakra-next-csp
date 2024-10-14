@@ -1,14 +1,20 @@
-"use client"
+"use client";
 
-import { ChakraProvider, defaultSystem } from "@chakra-ui/react"
-import { ThemeProvider } from "next-themes"
+import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
+import { ThemeProvider } from "next-themes";
 
-export default function RootLayout(props: { children: React.ReactNode }) {
+interface Props {
+  nonce?: string;
+  children: React.ReactNode;
+}
+
+export default function RootLayout(props: Props) {
+  console.log('provider nonce', props.nonce)
   return (
     <ChakraProvider value={defaultSystem}>
-      <ThemeProvider attribute="class" disableTransitionOnChange>
+      <ThemeProvider nonce={props.nonce} attribute="class" disableTransitionOnChange>
         {props.children}
       </ThemeProvider>
     </ChakraProvider>
-  )
+  );
 }
