@@ -24,6 +24,7 @@ export function middleware(request: NextRequest): NextResponse<unknown> {
     frame-ancestors 'none';
     upgrade-insecure-requests;
   `
+  
   /**
    * TODO: the CSP for `style-src` does not fully work with `nonce` and SSR.
    * The Client gets empty nonce string (browsers strip the nonces) which causes client-server rendering mismatch.
@@ -48,15 +49,6 @@ export function middleware(request: NextRequest): NextResponse<unknown> {
   })
 
   response.headers.set('Content-Security-Policy', csp)
-  response.headers.set('X-Frame-Options', 'DENY')
-  response.headers.set('X-Content-Type-Options', 'nosniff')
-  response.headers.set('Referrer-Policy', 'origin-when-cross-origin')
-  response.headers.set('Permissions-Policy', 'fullscreen=(self)')
-  response.headers.set('Expect-CT', 'max-age=86400, enforce')
-  response.headers.set(
-    'Strict-Transport-Security',
-    'max-age=63072000; includeSubDomains; preload'
-  )
 
   return response
 }
